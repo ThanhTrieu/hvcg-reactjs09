@@ -40,9 +40,9 @@ class VirusProvider extends React.PureComponent {
 
     render() {
         return (
-            <VirusContext value={this.state}>
+            <VirusContext.Provider value={this.state}>
                 {this.props.children}
-            </VirusContext>
+            </VirusContext.Provider>
         )
     }
 }
