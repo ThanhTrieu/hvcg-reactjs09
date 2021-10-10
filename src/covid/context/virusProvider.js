@@ -1,12 +1,9 @@
 import React from 'react';
-import LayoutVirus from './components/Layout';
-import GlobalVirus from './components/Global';
-import CountriesVirus from './components/Countries';
-import { apiVirus } from './services/api';
-import { helper } from './helpers/common';
-import { Skeleton } from 'antd';
+import { apiVirus } from '../services/api';
+import { helper } from '../helpers/common';
+import VirusContext from './virusContext';
 
-class AppVirus extends React.PureComponent {
+class VirusProvider extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,30 +38,13 @@ class AppVirus extends React.PureComponent {
         this.setState({loading: false});
     }
 
-    render () {
-
-        if(this.state.loading){
-            return (
-                <LayoutVirus
-                    lv1="Home"
-                    lv2="App"
-                    lv3="Virus"
-                >
-                    <Skeleton active />
-                </LayoutVirus>
-            )
-        }
-
+    render() {
         return (
-            <LayoutVirus
-                lv1="Home"
-                lv2="App"
-                lv3="Virus"
-            >
-                <GlobalVirus global={this.state.globalVirus} />
-                <CountriesVirus countries={this.state.countriesVirus} />
-            </LayoutVirus>
+            <VirusContext value={this.state}>
+                {this.props.children}
+            </VirusContext>
         )
     }
 }
-export default AppVirus;
+
+export default VirusProvider;

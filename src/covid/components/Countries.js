@@ -1,5 +1,7 @@
 import React from 'react';
 import { Row, Col, Table } from 'antd';
+import NumberFormat from 'react-number-format';
+import PropTypes from 'prop-types';
 
 // tao cot cho bang
 const columns = [
@@ -16,47 +18,53 @@ const columns = [
     {
         title: 'Moi nhiem benh',
         dataIndex: "NewConfirmed",
-        key: "NewConfirmed"
+        key: "NewConfirmed",
+        render: item => <NumberFormat value={item} displayType={'text'} thousandSeparator={true} />
     },
     {
         title: 'Tong ca nhiem benh',
         dataIndex: "TotalConfirmed",
-        key: "TotalConfirmed"
+        key: "TotalConfirmed",
+        render: item => <NumberFormat value={item} displayType={'text'} thousandSeparator={true} />
     },
     {
         title: 'Moi tu vong',
         dataIndex: "NewDeaths",
-        key: "NewDeaths"
+        key: "NewDeaths",
+        render: item => <NumberFormat value={item} displayType={'text'} thousandSeparator={true} />
     },
     {
         title: 'Tong ca tu vong',
         dataIndex: "TotalDeaths",
-        key: "TotalDeaths"
+        key: "TotalDeaths",
+        render: item => <NumberFormat value={item} displayType={'text'} thousandSeparator={true} />
     },
     {
         title: 'Moi khoi benh',
         dataIndex: "NewRecovered",
-        key: "NewRecovered"
+        key: "NewRecovered",
+        render: item => <NumberFormat value={item} displayType={'text'} thousandSeparator={true} />
     },
     {
         title: 'Tong ca chua khoi',
         dataIndex: "TotalRecovered",
-        key: "TotalRecovered"
+        key: "TotalRecovered",
+        render: item => <NumberFormat value={item} displayType={'text'} thousandSeparator={true} />
     }
 ];
-
-const data = [];
-
 class CountriesVirus extends React.PureComponent {
     render() {
         return (
             <Row style={{ margin: '20px 0px' }}>
                 <Col span={24}>
                     <h2 style={{textAlign: 'center'}}>Thong tin virus corona cac nuoc tren the gioi</h2>
-                    <Table columns={columns} dataSource={data} />
+                    <Table rowKey="ID" columns={columns} dataSource={this.props.countries} />
                 </Col>
             </Row>
         )
     }
+}
+CountriesVirus.propTypes = {
+    countries: PropTypes.arrayOf(PropTypes.object)
 }
 export default CountriesVirus;
