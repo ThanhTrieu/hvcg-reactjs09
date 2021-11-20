@@ -9,6 +9,8 @@ import { Skeleton } from "antd";
 const  PopularPage  = lazy(() => import("../pages/popular/index"));
 const  UpcomingPage = lazy(() => import('../pages/upcoming/index'));
 const  SearchPage   = lazy(() => import('../pages/search/index'));
+const  DetailMovie  = lazy(() => import('../pages/detail/index'));
+const  LoginMovies  = lazy(() => import('../pages/login/index'));
 
 const RouteMovie = () => {
     return (
@@ -26,6 +28,13 @@ const RouteMovie = () => {
                     </Route>
                     <Route path="/search-movie">
                         <SearchPage/>
+                    </Route>
+                    {/* /nguoi-phan-xu~1 */}
+                    <Route path="/:slug/:id">
+                        <DetailMovie />
+                    </Route>
+                    <Route path="/login">
+                        <LoginMovies/>
                     </Route>
                 </Switch>
             </Suspense>

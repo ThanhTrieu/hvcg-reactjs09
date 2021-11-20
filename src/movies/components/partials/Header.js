@@ -20,7 +20,12 @@ const HeaderMovie = () => {
                 <Menu.Item key="/search-movie">
                     <NavLink to="/search-movie">Search movie</NavLink>
                 </Menu.Item>
+
                 <Menu.Item key="/favorites-movie">Favorites</Menu.Item>
+                
+                <Menu.Item key="/login">
+                    <NavLink to="/login">Login</NavLink>
+                </Menu.Item>
             </Menu>
         </Header>
     )
