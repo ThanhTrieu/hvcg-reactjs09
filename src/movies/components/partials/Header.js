@@ -1,12 +1,23 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import { helper } from '../../helpers/common';
 
 const { Header } = Layout;
 
 const HeaderMovie = () => {
+    const history = useHistory();
     let location = useLocation(); // hooks cua react routes
     let { pathname } = location;
+    let username = helper.getUsernameLogin();
+
+    const logoutUser = () => {
+        // xoa token
+        helper.removeToken();
+        // quay ve trang login
+        history.push('/login');
+    }
+
     return (
         <Header>
             <div className="logo" />
@@ -23,9 +34,21 @@ const HeaderMovie = () => {
 
                 <Menu.Item key="/favorites-movie">Favorites</Menu.Item>
                 
-                <Menu.Item key="/login">
-                    <NavLink to="/login">Login</NavLink>
-                </Menu.Item>
+                {username !== null ? (
+                    <>
+                        <Menu.Item key="/profile-user">
+                            <NavLink to="/profile-user">Hi:  {username}</NavLink>
+                        </Menu.Item>
+                        <Menu.Item key="logout" onClick={() => logoutUser()}>Logout</Menu.Item>
+                    </>
+                ) : (
+                    <Menu.Item key="/login">
+                        <NavLink to="/login">Login</NavLink>
+                    </Menu.Item>
+                )}
+
+                
+
             </Menu>
         </Header>
     )

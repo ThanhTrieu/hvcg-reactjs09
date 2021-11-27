@@ -1,26 +1,35 @@
-import React from 'react';
-import { Row, Col, Form, Input, Button  } from 'antd';
+import React, { useState } from 'react';
+import { Row, Col, Form, Input, Button, Spin  } from 'antd';
 import { apiUser } from '../../services/login';
 import { helper } from '../../helpers/common';
 import { useHistory } from "react-router-dom";
 
 const LoginMovies = () => {
+    const [loadingLogin, setLoadingLogin] = useState(false);
+    const [messErrLogin, setMessErrLogin] = useState(null);
+
     const history = useHistory();
+
     const onFinish = async (values) => {
         const user = values.username;
         const pass = values.password;
         if(user !== '' && pass !== ''){
-            const data = await apiUser.loginUser(user, pass);
-            if(!helper.isEmptyObject(data)){
-                if(data.hasOwnProperty('token')){
-                    // login thanh cong
-                    // quay vao trang phim
-                    // luu data['token'] vao local storage
-                    // khi logout can xoa bo token da luu trong local storage
-                    history.push('/popular-movie');
-                } else {
-                    // login ko dung
-                }
+            await setLoadingLogin(true);
+            const data = await apiUser.loginUserFake(user, pass);
+            if(data !== null){
+                await setMessErrLogin(null);
+                await setLoadingLogin(false);
+                // login thanh cong
+                // quay vao trang phim
+                // luu data['token'] vao local storage
+                helper.saveToken(data);
+                // khi logout can xoa bo token da luu trong local storage
+                history.push('/popular-movie');
+            } else {
+                // login ko dung
+                helper.removeToken();
+                await setLoadingLogin(false);
+                await setMessErrLogin('account invalid');
             }
         }
     };
@@ -31,6 +40,7 @@ const LoginMovies = () => {
     return (
         <Row>
             <Col span={12} offset={6}>
+                { messErrLogin !== null && <p style={{color: 'red'}}> {messErrLogin} </p>}
                 <Form
                     name="basic"
                     labelCol={{
@@ -78,9 +88,10 @@ const LoginMovies = () => {
                         span: 16,
                         }}
                     >
-                        <Button type="primary" htmlType="submit">
+                        <Button disabled={loadingLogin} type="primary" htmlType="submit">
                             Login
                         </Button>
+                        {loadingLogin && <Spin style={{marginLeft: '10px'}} />} 
                     </Form.Item>
                 </Form>
             </Col>
